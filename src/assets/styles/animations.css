@@ -1,0 +1,46 @@
+/* Анімація */
+/* fade для форми редагування */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+/* list для додавання/видалення постів */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+/* slide-fade для повідомлення про помилку */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.5s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+/* fade-scale для кнопки "Видалити всі пости" */
+button.blog-posts__button.blog-posts__button--delete.fade-scale-leave-active,
+button.blog-posts__button.blog-posts__button--delete.fade-scale-enter-active,
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: all 3.5s ease;
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.3);
+}

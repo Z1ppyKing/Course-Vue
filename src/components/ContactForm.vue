@@ -4,17 +4,20 @@
 
     <!-- Поле для імені -->
     <div class="contact-form__field">
-      <label class="contact-form__label">Ім'я</label>
+      <label class="contact-form__label">Ім'я (localStorage)</label>
       <input
         v-model="name"
         type="text"
         class="contact-form__input"
         placeholder="Введіть ваше ім'я"
+        v-autofocus
+        v-uppercase
+        v-highlight
       />
     </div>
     <!-- Поле для email -->
     <div class="contact-form__field">
-      <label class="contact-form__label">Email</label>
+      <label class="contact-form__label">Email (cookies)</label>
       <input
         v-model="email"
         type="email"
@@ -24,13 +27,14 @@
     </div>
     <!-- Поле для телефону -->
     <div class="contact-form__field">
-      <label class="contact-form__label">Телефон</label>
+      <label class="contact-form__label">Телефон (sessionStorage)</label>
       <input
         v-model="phone"
         type="tel"
         maxlength="13"
         class="contact-form__input"
         placeholder="Введіть ваш телефон в форматі +380xxxxxxxxx"
+        v-ukrphone
       />
     </div>
 
@@ -46,12 +50,81 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
 // Реактивні змінні для полів форми
 const name = ref("");
 const email = ref("");
 const phone = ref("");
+
+// Watchers для автоматичного збереження при зміні полів
+watch(name, () => {
+  saveNameToLocalStorage();
+});
+
+watch(email, () => {
+  saveEmailToCookies();
+});
+
+watch(phone, () => {
+  savePhoneToSessionStorage();
+});
+
+// Методи для збереження данних в різних сховищах
+const saveNameToLocalStorage = () => {
+  localStorage.setItem("contactFormName", name.value);
+};
+
+const saveEmailToCookies = () => {
+  setCookie("contactFormEmail", email.value, 30); // Зберігаємо на 30 днів
+};
+
+const savePhoneToSessionStorage = () => {
+  sessionStorage.setItem("contactFormPhone", phone.value);
+};
+
+// Завантаження данних з різних сховищ
+const loadFormData = () => {
+  // Завантажуємо name з localStorage
+  const savedName = localStorage.getItem("contactFormName");
+  if (savedName) {
+    name.value = savedName;
+  }
+
+  // Завантажуємо email з cookies
+  const savedEmail = getCookie("contactFormEmail");
+  if (savedEmail) {
+    email.value = savedEmail;
+  }
+
+  // Завантажуємо phone з sessionStorage
+  const savedPhone = sessionStorage.getItem("contactFormPhone");
+  if (savedPhone) {
+    phone.value = savedPhone;
+  }
+};
+
+// Методи для роботи з cookies
+const setCookie = (name, value, days = 365) => {
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = name + "=" + value + ";" + expires + ";path=/";
+};
+
+const getCookie = (name) => {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+};
+
+const deleteCookie = (name) => {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+};
 
 // Метод для перевірки форми
 const validateForm = () => {
@@ -75,6 +148,11 @@ const clearForm = () => {
   name.value = "";
   email.value = "";
   phone.value = "";
+
+  // Очіщуємо всі сховища
+  localStorage.removeItem("contactFormName");
+  deleteCookie("contactFormEmail");
+  sessionStorage.removeItem("contactFormPhone");
 };
 
 // Обчислювальна властивість для статусу форми
@@ -90,6 +168,8 @@ const formStatus = computed(() => {
   }
   return "Форма готова для відправки";
 });
+
+onMounted(loadFormData);
 </script>
 
 <style>

@@ -15,14 +15,14 @@ export const usePostsStore = defineStore("posts", () => {
   };
 
   const removeAllPosts = () => {
-    posts.value.length = 0;
+    posts.value = [];
   };
-  
+
   const addPost = (newPost) => {
     posts.value.push({
-      id:posts.value.length + 1,
+      id: posts.value.length + 1,
       title: newPost.title,
-      content: newPost.content
+      content: newPost.content,
     });
   };
 
@@ -33,12 +33,13 @@ export const usePostsStore = defineStore("posts", () => {
       post.content = updatedData.content;
     }
   };
-  
-  const searchPostsByTitle = (title) => {
-    posts.value = posts.value.filter((post) =>
-      post.title.toLowerCase().includes(title.toLowerCase())
-    );
-  } 
-    
-  return { posts, getPostsCount, removePost, removeAllPosts, addPost, editPost, searchPostsByTitle };
+
+  return {
+    posts,
+    getPostsCount,
+    removePost,
+    removeAllPosts,
+    addPost,
+    editPost,
+  };
 });

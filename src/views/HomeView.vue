@@ -1,5 +1,5 @@
 <template>
-
+  <ContactForm />
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
 
@@ -9,14 +9,5 @@
 
 <script setup>
 import HelloWorld from "@/components/HelloWorld.vue";
+import ContactForm from "@/components/ContactForm.vue";
 </script>
-
-<style>
-.usercards-row {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  gap: 16px;
-}
-</style>

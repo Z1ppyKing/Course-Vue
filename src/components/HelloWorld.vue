@@ -1,28 +1,20 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>{{ props.msg }}</h1>
     <p>{{ count }}</p>
     <button @click="increment">Збільшити</button>
   </div>
 </template>
 
-<script>
-export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
-  },
-  data() {
-    return {
-      count: 0,
-    };
-  },
-  methods: {
-    increment() {
-      this.count++;
-    },
-  },
-};
+<script setup>
+import { defineProps } from "vue";
+import { useCounter } from "@/composables/useCounter";
+
+const props = defineProps({
+  msg: String,
+});
+
+const { count, increment } = useCounter();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
