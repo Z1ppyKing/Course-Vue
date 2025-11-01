@@ -8,14 +8,15 @@
     </Transition>
 
     <!-- Пошук постів -->
-    <div class="blog-posts__search">
+    <Transition name="search-fade">
+    <div v-if="posts .length > 0" class="blog-posts__search">
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Введіть заголовок для пошуку"
       />
     </div>
-
+    </Transition>
     <!-- Список постів -->
     <div>
       <TransitionGroup name="list" class="blog-posts__list">
