@@ -75,4 +75,16 @@ describe("UserCard", () => {
   });
 
   // Тест 7: Клік на кнопку "Показати улюблений колір" - випускає подію color
+  test("Випускає подію contact при кліку на кнопку Показати улюблеий колір", async () => {
+    const wrapper = mount(UserCard, {
+      props: {
+        name: "Іван",
+        age: 13,
+      },
+    });
+    await wrapper.findAll("button")[1].trigger("click");
+    const emitted = wrapper.emitted("color");
+    expect(emitted).toBeTruthy();
+    expect(emitted[0]).toEqual(["синій"]); 
+  });
 });
